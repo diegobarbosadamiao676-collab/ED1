@@ -1,17 +1,14 @@
 #include "raylib.h"
 #include <stdlib.h>
-
 #define LARGURA_JANELA 800
 #define ALTURA_JANELA  600
 #define TAM_CELULA     40
-
 typedef struct {
     Vector2 pos;
     Vector2 vel;
     float raio;
     Color cor;
 } Bola;
-
 int **criarMatriz(int linhas, int colunas) {
     int **matriz = (int **)malloc(linhas * sizeof(int *));
     for (int i = 0; i < linhas; i++) {
@@ -22,14 +19,12 @@ int **criarMatriz(int linhas, int colunas) {
     }
     return matriz;
 }
-
 void liberarMatriz(int **matriz, int linhas) {
     for (int i = 0; i < linhas; i++) {
         free(matriz[i]);
     }
     free(matriz);
 }
-
 Bola *criarBolas(int quantidade) {
     Bola *bolas = (Bola *)malloc(quantidade * sizeof(Bola));
     for (int i = 0; i < quantidade; i++) {
@@ -42,11 +37,9 @@ Bola *criarBolas(int quantidade) {
     }
     return bolas;
 }
-
 void atualizarBola(Bola *b) {
     b->pos.x += b->vel.x;
     b->pos.y += b->vel.y;
-
     if (b->pos.x - b->raio < 0 || b->pos.x + b->raio > LARGURA_JANELA) {
         b->vel.x *= -1;
     }
@@ -54,27 +47,21 @@ void atualizarBola(Bola *b) {
         b->vel.y *= -1;
     }
 }
-
 int main(void) {
     InitWindow(LARGURA_JANELA, ALTURA_JANELA, "Exercicio 2 - Mapa de Calor");
     SetTargetFPS(60);
-
     int linhas = ALTURA_JANELA / TAM_CELULA;
     int colunas = LARGURA_JANELA / TAM_CELULA;
     int **matriz = criarMatriz(linhas, colunas);
-
     int quantidadeBolas = 12;
     Bola *bolas = criarBolas(quantidadeBolas);
     int celulasVisitadas = 0;
-
     while (!WindowShouldClose()) {
         // Atualizacao e verificacao de colisao com as celulas
         for (int i = 0; i < quantidadeBolas; i++) {
             atualizarBola(bolas + i);
-
             int coluna = (int)((bolas + i)->pos.x / TAM_CELULA);
             int linha  = (int)((bolas + i)->pos.y / TAM_CELULA);
-
             if (linha >= 0 && linha < linhas && coluna >= 0 && coluna < colunas) {
                 if (matriz[linha][coluna] == 0) {
                     matriz[linha][coluna] = 1;
@@ -82,11 +69,9 @@ int main(void) {
                 }
             }
         }
-
         // Desenho na tela
         BeginDrawing();
             ClearBackground(RAYWHITE);
-
             // Desenha o mapa de grade
             for (int i = 0; i < linhas; i++) {
                 for (int j = 0; j < colunas; j++) {
@@ -94,22 +79,18 @@ int main(void) {
                     DrawRectangle(j * TAM_CELULA, i * TAM_CELULA, TAM_CELULA - 1, TAM_CELULA - 1, cor);
                 }
             }
-
             // Desenha as bolas
             for (int i = 0; i < quantidadeBolas; i++) {
                 Bola *b = bolas + i;
                 DrawCircleV(b->pos, b->raio, b->cor);
             }
-
             DrawText(TextFormat("Celulas visitadas: %d", celulasVisitadas), 10, 10, 20, BLACK);
         EndDrawing();
     }
-
     liberarMatriz(matriz, linhas);
     if (bolas != NULL) {
         free(bolas);
     }
-
     CloseWindow();
     return 0;
 }
