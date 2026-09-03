@@ -57,7 +57,6 @@ int main(void) {
     Bola *bolas = criarBolas(quantidadeBolas);
     int celulasVisitadas = 0;
     while (!WindowShouldClose()) {
-        // Atualizacao e verificacao de colisao com as celulas
         for (int i = 0; i < quantidadeBolas; i++) {
             atualizarBola(bolas + i);
             int coluna = (int)((bolas + i)->pos.x / TAM_CELULA);
@@ -69,17 +68,16 @@ int main(void) {
                 }
             }
         }
-        // Desenho na tela
+        
         BeginDrawing();
             ClearBackground(RAYWHITE);
-            // Desenha o mapa de grade
             for (int i = 0; i < linhas; i++) {
                 for (int j = 0; j < colunas; j++) {
                     Color cor = (matriz[i][j] == 1) ? GRAY : LIGHTGRAY;
                     DrawRectangle(j * TAM_CELULA, i * TAM_CELULA, TAM_CELULA - 1, TAM_CELULA - 1, cor);
                 }
             }
-            // Desenha as bolas
+            
             for (int i = 0; i < quantidadeBolas; i++) {
                 Bola *b = bolas + i;
                 DrawCircleV(b->pos, b->raio, b->cor);
