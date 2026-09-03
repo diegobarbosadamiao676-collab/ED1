@@ -54,7 +54,6 @@ int main(void) {
     int quantidadeBolas = 12;
     Bola *bolas = criarBolas(quantidadeBolas);
     while (!WindowShouldClose()) {
-        // ESPACO: Adiciona nova bola
         if (IsKeyPressed(KEY_SPACE)) {
             quantidadeBolas++;
             bolas = (Bola *) realloc(bolas, quantidadeBolas * sizeof(Bola));
@@ -65,7 +64,6 @@ int main(void) {
             b->raio = 10;
             b->cor = RED;
         }
-        // BACKSPACE: Remove a ultima bola
         if (IsKeyPressed(KEY_BACKSPACE) && quantidadeBolas > 0) {
             quantidadeBolas--;
             if (quantidadeBolas > 0) {
@@ -75,13 +73,11 @@ int main(void) {
                 bolas = NULL;
             }
         }
-        // Atualiza a posicao de cada bola
         for (int i = 0; i < quantidadeBolas; i++) {
             atualizarBola(bolas + i);
         }
         BeginDrawing();
             ClearBackground(RAYWHITE);
-            // Desenho das bolas
             for (int i = 0; i < quantidadeBolas; i++) {
                 Bola *b = bolas + i;
                 DrawCircleV(b->pos, b->raio, b->cor);
