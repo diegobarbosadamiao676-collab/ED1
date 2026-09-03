@@ -12,7 +12,6 @@ typedef enum {
     MOEDA_DIAMANTE
 } TipoMoeda;
 
-// Struct com campo de tempo para o respawn
 typedef struct {
     Vector2 pos;
     float raio;
@@ -50,7 +49,6 @@ Moeda *criarMoedas(int quantidade) {
         m->pos = (Vector2){ GetRandomValue(30, LARGURA_JANELA - 30), GetRandomValue(30, ALTURA_JANELA - 30) };
         m->raio = 10.0f;
         
-        // Sorteio: 10% de chance para Diamante
         int sorteio = GetRandomValue(0, 9);
         if (sorteio == 0) {
             m->tipo = MOEDA_DIAMANTE;
@@ -90,7 +88,6 @@ void atualizarMoedas(Moeda *moedas, int quantidade) {
     for (int i = 0; i < quantidade; i++) {
         Moeda *m = (moedas + i);
 
-        // Verifica os 3 segundos para respawn
         if (m->coletada && (tempoAtual - m->tempoColeta >= 3.0f)) {
             m->pos = (Vector2){ GetRandomValue(30, LARGURA_JANELA - 30), GetRandomValue(30, ALTURA_JANELA - 30) };
             
