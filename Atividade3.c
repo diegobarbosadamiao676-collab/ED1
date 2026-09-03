@@ -57,7 +57,6 @@ int main() {
         EndDrawing();
     }
 
-    // Liberação de memória
     free(bolas);
     CloseWindow();
     return 0;
