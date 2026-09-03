@@ -10,7 +10,6 @@ typedef struct {
     Vector2 vel;
 } Bola;
 
-// Alocação dinâmica do vetor de bolas
 Bola *criarBolas(int quantidade) {
     Bola *bolas = (Bola *) malloc(quantidade * sizeof(Bola));
     for (int i = 0; i < quantidade; i++) {
@@ -30,7 +29,6 @@ int main() {
     Bola *bolas = criarBolas(qtdBolas);
 
     while (!WindowShouldClose()) {
-        // Redimensionamento dinâmico via teclado (exemplo com realloc)
         if (IsKeyPressed(KEY_UP)) {
             qtdBolas++;
             bolas = (Bola *) realloc(bolas, qtdBolas * sizeof(Bola));
@@ -39,7 +37,6 @@ int main() {
             (bolas + qtdBolas - 1)->raio = 12.0f;
         }
 
-        // Atualização das posições usando ponteiros
         for (int i = 0; i < qtdBolas; i++) {
             Bola *b = (bolas + i);
             b->pos.x += b->vel.x;
