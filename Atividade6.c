@@ -28,7 +28,7 @@ typedef struct {
 typedef union {
     DadosArma arma;
     DadosPocao pocao;
-    DadosEscudo escudo; // <-- EXERCÍCIO 1: Campo adicionado na union
+    DadosEscudo escudo; 
 } DadosItem;
 
 typedef enum {
