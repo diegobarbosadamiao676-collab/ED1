@@ -4,13 +4,12 @@
 #define LARGURA_JANELA 800
 #define ALTURA_JANELA 600
 
-// EXERCÍCIO 1: Adicionada a propriedade 'armadura' no Jogador
 typedef struct {
     Vector2 pos;
     float raio;
     float dano;
     int vida;
-    int armadura; // <-- Novo campo para o escudo
+    int armadura;
 } Jogador;
 
 typedef struct {
@@ -19,22 +18,19 @@ typedef struct {
 } DadosArma;
 
 typedef struct {
-    int cura; // Se for negativo, torna-se poção envenenada
+    int cura; 
 } DadosPocao;
 
-// EXERCÍCIO 1: Struct para os dados do escudo
 typedef struct {
     int absorcao;
 } DadosEscudo;
 
-// Tagged Union combinando as structs
 typedef union {
     DadosArma arma;
     DadosPocao pocao;
     DadosEscudo escudo; // <-- EXERCÍCIO 1: Campo adicionado na union
 } DadosItem;
 
-// EXERCÍCIO 1: Adicionado ITEM_ESCUDO no enum
 typedef enum {
     ITEM_ARMA,
     ITEM_POCAO,
@@ -58,7 +54,6 @@ Item *criarItens(int quantidade) {
         it->raio = 12.0f;
         it->coletado = false;
         
-        // Sorteia entre os 3 tipos de itens
         it->tipo = (TipoItem) GetRandomValue(ITEM_ARMA, ITEM_ESCUDO);
 
         if (it->tipo == ITEM_ARMA) {
@@ -66,18 +61,16 @@ Item *criarItens(int quantidade) {
             it->dados.arma.alcance = GetRandomValue(1, 3);
         } 
         else if (it->tipo == ITEM_POCAO) {
-            // EXERCÍCIO 2: Sorteio de poção envenenada (30% de chance: valores 0, 1 ou 2)
             int chanceVeneno = GetRandomValue(0, 9);
             int valorCura = GetRandomValue(10, 30);
 
             if (chanceVeneno < 3) {
-                it->dados.pocao.cura = -valorCura; // Cura negativa (causa dano)
+                it->dados.pocao.cura = -valorCura;
             } else {
-                it->dados.pocao.cura = valorCura;  // Cura normal
+                it->dados.pocao.cura = valorCura;
             }
         } 
         else if (it->tipo == ITEM_ESCUDO) {
-            // EXERCÍCIO 1: Atribui valor de absorção do escudo
             it->dados.escudo.absorcao = GetRandomValue(5, 20);
         }
     }
@@ -92,13 +85,11 @@ void aplicarItem(Jogador *j, Item *item) {
             break;
         case ITEM_POCAO:
             j->vida += item->dados.pocao.cura;
-            // EXERCÍCIO 2: Trava a vida em zero para não ficar negativa
             if (j->vida < 0) {
                 j->vida = 0;
             }
             break;
         case ITEM_ESCUDO:
-            // EXERCÍCIO 1: Aumenta a armadura do jogador
             j->armadura += item->dados.escudo.absorcao;
             break;
     }
@@ -109,7 +100,6 @@ int main() {
     InitWindow(LARGURA_JANELA, ALTURA_JANELA, "Atividade 3 - Exercicios 1 e 2");
     SetTargetFPS(60);
 
-    // Inicializa o jogador com armadura 0
     Jogador jogador = { (Vector2){ LARGURA_JANELA / 2.0f, ALTURA_JANELA / 2.0f }, 15.0f, 10.0f, 100, 0 };
     int totalItens = 10;
     Item *itens = criarItens(totalItens);
@@ -133,8 +123,6 @@ int main() {
 
         BeginDrawing();
         ClearBackground(RAYWHITE);
-
-        // Desenhar itens com cores distintas
         for (int i = 0; i < totalItens; i++) {
             Item *it = (itens + i);
             if (!it->coletado) {
@@ -142,17 +130,15 @@ int main() {
                 if (it->tipo == ITEM_ARMA) {
                     cor = RED;
                 } else if (it->tipo == ITEM_POCAO) {
-                    // EXERCÍCIO 2: Poção envenenada é Roxa (PURPLE), curativa é Verde (GREEN)
                     cor = (it->dados.pocao.cura < 0) ? PURPLE : GREEN;
                 } else if (it->tipo == ITEM_ESCUDO) {
-                    // EXERCÍCIO 1: Escudo é Azul Escuro (DARKBLUE)
                     cor = DARKBLUE;
                 }
                 DrawCircleV(it->pos, it->raio, cor);
             }
         }
 
-        // Desenha jogador e estatísticas
+        
         DrawCircleV(jogador.pos, jogador.raio, BLUE);
         DrawText(TextFormat("Vida: %d | Dano: %.1f | Armadura: %d", jogador.vida, jogador.dano, jogador.armadura), 10, 10, 20, DARKGRAY);
 
