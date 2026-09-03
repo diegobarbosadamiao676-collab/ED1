@@ -1,5 +1,5 @@
 #include "raylib.h"
-#include <stdlib.h>
+#include <stdlib.h> 
 
 #define LARGURA_JANELA 800
 #define ALTURA_JANELA 600
