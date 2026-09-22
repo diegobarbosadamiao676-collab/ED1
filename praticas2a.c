@@ -8,7 +8,6 @@ if (in == NULL || out == NULL) {
 printf("Erro ao abrir os arquivos!\n");
 return 1;
 }
-
 char linha[256];
 while (fgets(linha, sizeof(linha), in)) {
 linha[strcspn(linha, "\r\n")] = 0;
@@ -33,7 +32,6 @@ char *situacao = (media >= 7.0) ? "aprovado" : "reprovado";
 fprintf(out, "%s\t%.1f\t%s\n", nome, media, situacao);
 }
 }
-
 fclose(in);
 fclose(out);
 printf("Ficheiro 'saida_q3.txt' gerado com sucesso.\n");
